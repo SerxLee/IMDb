@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B7ED68D1CA966B000E8EB5E /* IMDbAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7ED68C1CA966B000E8EB5E /* IMDbAPIController.swift */; };
+		9B9A4E7C1BEF15F600FE5EBB /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A4E7B1BEF15F600FE5EBB /* StringExtension.swift */; };
 		9BD649E51BE635DB0028E2BD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD649E41BE635DB0028E2BD /* AppDelegate.swift */; };
 		9BD649E71BE635DB0028E2BD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD649E61BE635DB0028E2BD /* ViewController.swift */; };
 		9BD649EA1BE635DB0028E2BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BD649E81BE635DB0028E2BD /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B7ED68C1CA966B000E8EB5E /* IMDbAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IMDbAPIController.swift; sourceTree = "<group>"; };
+		9B9A4E7B1BEF15F600FE5EBB /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9BD649E11BE635DB0028E2BD /* IMDb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMDb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD649E41BE635DB0028E2BD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD649E61BE635DB0028E2BD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +103,8 @@
 			children = (
 				9BD649E41BE635DB0028E2BD /* AppDelegate.swift */,
 				9BD649E61BE635DB0028E2BD /* ViewController.swift */,
+				9B7ED68C1CA966B000E8EB5E /* IMDbAPIController.swift */,
+				9B9A4E7B1BEF15F600FE5EBB /* StringExtension.swift */,
 				9BD649E81BE635DB0028E2BD /* Main.storyboard */,
 				9BD649EB1BE635DB0028E2BD /* Assets.xcassets */,
 				9BD649ED1BE635DB0028E2BD /* LaunchScreen.storyboard */,
@@ -258,6 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B7ED68D1CA966B000E8EB5E /* IMDbAPIController.swift in Sources */,
+				9B9A4E7C1BEF15F600FE5EBB /* StringExtension.swift in Sources */,
 				9BD649E71BE635DB0028E2BD /* ViewController.swift in Sources */,
 				9BD649E51BE635DB0028E2BD /* AppDelegate.swift in Sources */,
 			);
@@ -484,6 +492,7 @@
 				9BD64A0B1BE635DB0028E2BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9BD64A0C1BE635DB0028E2BD /* Build configuration list for PBXNativeTarget "IMDbTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +501,7 @@
 				9BD64A0E1BE635DB0028E2BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9BD64A0F1BE635DB0028E2BD /* Build configuration list for PBXNativeTarget "IMDbUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +510,7 @@
 				9BD64A111BE635DB0028E2BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
