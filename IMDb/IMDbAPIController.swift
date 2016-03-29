@@ -7,13 +7,21 @@
 //
 
 import Foundation
+import AFNetworking
 
 protocol IMDbAPIControllerDelegate{
     
-    func didFinishIMDbSearch(result: Dictionary<String, String>)
+    func didFinishIMDbSearch(result: [Dictionary<String, String>], finish: Bool)
+}
+
+protocol IMDbAPISearchByIdDelegate{
+    
+    func didFinishSearchByID(result: Dictionary<String, String>)
 }
 
 class IMDbAPIController: NSObject{
+    
+    let manager = AFHTTPSessionManager()
     
     var delegate: IMDbAPIControllerDelegate?
     
@@ -21,36 +29,77 @@ class IMDbAPIController: NSObject{
         self.delegate = delegate
     }
     
-    func searchIMDb(forContent: String){
+    
+
+    
+    func searchIMDbForKeyword(keyWord: String){
+        
+        let spacelessString = keyWord.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        
+        let urlPath: String =  "http://www.omdbapi.com/?s=\(spacelessString)"
+        
+        manager.POST(urlPath, parameters: nil, success: { (AFHTTPRequestOperation operation,id responseObject) -> Void in
+            
+            if responseObject!["Response"] as! String == "False"{
+                
+                if let apiDelegate = self.delegate {
+                    dispatch_async(dispatch_get_main_queue()){
+                        
+                        var lim = [Dictionary<String, String>]()
+                        
+                        lim.append(responseObject as! Dictionary<String, String>)
+                        
+                        apiDelegate.didFinishIMDbSearch(lim, finish: false)
+                    }
+                }
+            }else{
+                if let apiDelegate = self.delegate {
+                    dispatch_async(dispatch_get_main_queue()){
+                        
+                        let result = responseObject!["Search"] as! [Dictionary<String, String>]
+                        
+                        apiDelegate.didFinishIMDbSearch(result, finish: true)
+                    }
+                }
+
+            }
+            
+        }, failure: nil)
+    }
+}
+
+
+class IMDbAPIControllerSearchByID: NSObject {
+    
+    let manager = AFHTTPSessionManager()
+
+    
+    var delegate: IMDbAPISearchByIdDelegate?
+    
+    init(delegate: IMDbAPISearchByIdDelegate){
+        
+        self.delegate = delegate
+    }
+    
+    func searchIMDbByID(forContent: String){
+        
         
         let spacelessString = forContent.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
         
-        let urlPath = NSURL(string: "http://www.omdbapi.com/?t=\(spacelessString)")
+        let urlPath: String = "http://www.omdbapi.com/?i=\(spacelessString)"
         
-        let session = NSURLSession.sharedSession()
-        
-        let task = session.dataTaskWithURL(urlPath!, completionHandler: {(data, reponse, error) in
+        manager.POST(urlPath, parameters: nil, success: { (AFHTTPRequestOperation operation,id responseObject) -> Void in
             
-            let jsonResults : AnyObject
-            
-            do {
-                jsonResults = try NSJSONSerialization.JSONObjectWithData(data!, options: [])
-                
-                if let apiDelegate = self.delegate {
+            if let apiDelegate = self.delegate {
+                dispatch_async(dispatch_get_main_queue()){
                     
-                    dispatch_async(dispatch_get_main_queue()){
-
-                        apiDelegate.didFinishIMDbSearch(jsonResults as! Dictionary<String, String>)
-                    }
+                    let result = responseObject as! Dictionary<String, String>
+                    
+                    apiDelegate.didFinishSearchByID(result)
                 }
-            } catch let error as NSError {
-                // failure
-                print("Fetch failed: \(error.localizedDescription)")
             }
-            
-        })
-        
-        task.resume()
+
+            }, failure: nil)
     }
-    
+
 }

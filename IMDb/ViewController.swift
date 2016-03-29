@@ -8,8 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDelegate{
+public var movieID: String = ""
 
+class ViewController: UIViewController, IMDbAPISearchByIdDelegate{
+    
+    
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var titleLable: UILabel!
     @IBOutlet weak var releasedLable: UILabel!
@@ -17,26 +20,29 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
     @IBOutlet weak var plotLable: UILabel!
     @IBOutlet weak var SubTittlelable: UILabel!
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    lazy var apiController:IMDbAPIControllerSearchByID = IMDbAPIControllerSearchByID(delegate: self)
     
-    lazy var apiController:IMDbAPIController = IMDbAPIController(delegate: self)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.apiController.delegate = self
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: "userTappedInView:")
-        self.view.addGestureRecognizer(tapGesture)
+
         
         self.formatLable(true)
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.apiController.delegate = self
+        
+        self.apiController.searchIMDbByID(movieID)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
     }
-    
     
     //lable设置
     func formatLable(firstLaunch: Bool){
@@ -55,7 +61,6 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
             lable.textAlignment = .Center
             
             switch lable{
-                
             case self.titleLable:
                 lable.font = UIFont(name: "Kailasa", size: 23)
             case self.SubTittlelable:
@@ -67,7 +72,6 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
             default:
                 lable.font = UIFont(name: "Kailasa", size: 14)
             }
-            
         }
         
         self.titleLable.font = UIFont(name: "kailase", size: 23)
@@ -132,8 +136,13 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         }
         
     }
+    
+    @IBAction func backAction(sender: UIBarButtonItem) {
         
-    func didFinishIMDbSearch(result: Dictionary<String, String>) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func didFinishSearchByID(result: Dictionary<String, String>) {
         
         self.formatLable(false)
         
@@ -151,33 +160,18 @@ class ViewController: UIViewController, IMDbAPIControllerDelegate, UISearchBarDe
         }
     }
     
-    
     //添加图片 json Poster
     func formatImageFromPath(path: String){
         let posterUrl = NSURL(string: path)
         let posterImageData = NSData(contentsOfURL: posterUrl!)
         
-        self.posterImageView.layer.cornerRadius = 100.0
+        self.posterImageView.layer.cornerRadius = 10.0
         self.posterImageView.clipsToBounds = true
         self.posterImageView.contentMode = .ScaleAspectFill
         self.posterImageView.image = UIImage(data: posterImageData!)
         
         self.blurBackgroundUsingImage(UIImage(data: posterImageData!)!)
     }
-    
-    
-    //Search
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.apiController.searchIMDb(searchBar.text!)
-        searchBar.resignFirstResponder()
-        searchBar.text = ""
 
-    }
-    
-    //键盘隐藏 手势识别 方法
-    func userTappedInView(recognizer: UITapGestureRecognizer){
-        self.searchBar.resignFirstResponder()
-    }    
 }
 
